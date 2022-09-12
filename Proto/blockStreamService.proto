@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcSample";
+
+package blockStream;
+
+service BlockStreamClient {
+  rpc BlockStreamOperation (stream StartRequest) returns (StreamOperationResponse);
+}
+
+message StartRequest {
+  string BlockName = 1;
+  bytes Chunk= 2;
+}
+
+message StreamOperationResponse {
+  
+}
