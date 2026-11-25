@@ -1,5 +1,9 @@
 # GrpcSample — .NET 11 Comprehensive gRPC Showcase
 
+[![.NET 11 CI](https://github.com/altunga/GrpcSample/actions/workflows/ci.yml/badge.svg)](https://github.com/altunga/GrpcSample/actions/workflows/ci.yml)
+![.NET 11](https://img.shields.io/badge/.NET-11.0-512BD4)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
 A comprehensive **.NET 11 (`net11.0`)** gRPC reference solution implementing the same **Commerce, Warehouse Telemetry, and Binary Block Streaming** workload across three distinct gRPC approaches in .NET:
 
 1. **`01-NativeGrpc`** — Proto-first official gRPC (`Grpc.AspNetCore` + `.proto` contracts + JSON Transcoding + Server Reflection + Health Checks)
