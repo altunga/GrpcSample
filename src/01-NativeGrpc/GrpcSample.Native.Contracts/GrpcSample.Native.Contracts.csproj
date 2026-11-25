@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <Protobuf Include="..\Protos\common.proto" GrpcServices="None" AdditionalImportDirs="..\Protos" Link="Protos\common.proto" />
+    <Protobuf Include="..\Protos\commerce.proto" GrpcServices="Both" AdditionalImportDirs="..\Protos" Link="Protos\commerce.proto" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" />
+    <PackageReference Include="Google.Api.CommonProtos" />
+    <PackageReference Include="Grpc.Net.Client" />
+    <PackageReference Include="Grpc.Tools" PrivateAssets="All" />
+  </ItemGroup>
+</Project>

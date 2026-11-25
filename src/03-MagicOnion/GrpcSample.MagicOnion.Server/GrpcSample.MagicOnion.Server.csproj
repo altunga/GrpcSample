@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <ItemGroup>
+    <PackageReference Include="MagicOnion.Server" />
+    <PackageReference Include="Grpc.AspNetCore.HealthChecks" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\GrpcSample.Domain\GrpcSample.Domain.csproj" />
+    <ProjectReference Include="..\..\GrpcSample.Infrastructure.Grpc\GrpcSample.Infrastructure.Grpc.csproj" />
+    <ProjectReference Include="..\GrpcSample.MagicOnion.Shared\GrpcSample.MagicOnion.Shared.csproj" />
+  </ItemGroup>
+</Project>

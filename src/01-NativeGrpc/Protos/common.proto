@@ -1,0 +1,201 @@
+syntax = "proto3";
+
+package commerce.v1;
+
+option csharp_namespace = "GrpcSample.Native.Contracts";
+
+import "google/protobuf/timestamp.proto";
+
+enum ProductCategory {
+  PRODUCT_CATEGORY_ELECTRONICS = 0;
+  PRODUCT_CATEGORY_BOOKS = 1;
+  PRODUCT_CATEGORY_HOME_OFFICE = 2;
+  PRODUCT_CATEGORY_GAMING = 3;
+  PRODUCT_CATEGORY_AUDIO = 4;
+  PRODUCT_CATEGORY_ACCESSORIES = 5;
+}
+
+enum CustomerTier {
+  CUSTOMER_TIER_STANDARD = 0;
+  CUSTOMER_TIER_SILVER = 1;
+  CUSTOMER_TIER_GOLD = 2;
+  CUSTOMER_TIER_ENTERPRISE = 3;
+}
+
+enum OrderStatus {
+  ORDER_STATUS_PENDING = 0;
+  ORDER_STATUS_PROCESSING = 1;
+  ORDER_STATUS_SHIPPED = 2;
+  ORDER_STATUS_DELIVERED = 3;
+  ORDER_STATUS_CANCELLED = 4;
+}
+
+enum ChatCommandType {
+  CHAT_COMMAND_TYPE_JOIN = 0;
+  CHAT_COMMAND_TYPE_MESSAGE = 1;
+  CHAT_COMMAND_TYPE_ORDER_STATUS_QUERY = 2;
+  CHAT_COMMAND_TYPE_PING = 3;
+}
+
+message ProductModel {
+  string id = 1;
+  string sku = 2;
+  string name = 3;
+  string description = 4;
+  ProductCategory category = 5;
+  double price = 6;
+  int32 stock_quantity = 7;
+  double rating = 8;
+  repeated string tags = 9;
+  map<string, string> attributes = 10;
+  bool is_active = 11;
+  google.protobuf.Timestamp created_at_utc = 12;
+}
+
+message OrderLineItemModel {
+  string product_id = 1;
+  string sku = 2;
+  string product_name = 3;
+  int32 quantity = 4;
+  double unit_price = 5;
+}
+
+message OrderModel {
+  string id = 1;
+  string customer_id = 2;
+  OrderStatus status = 3;
+  repeated OrderLineItemModel items = 4;
+  double total_amount = 5;
+  string shipping_address = 6;
+  optional string tracking_number = 7;
+  google.protobuf.Timestamp created_at_utc = 8;
+}
+
+message CatalogSummaryModel {
+  int32 total_products = 1;
+  int32 active_products = 2;
+  int32 total_stock_units = 3;
+  double total_inventory_value = 4;
+  int32 total_customers = 5;
+  int32 total_orders = 6;
+  double total_revenue = 7;
+  int32 total_telemetry_readings = 8;
+  int32 total_blocks = 9;
+  map<string, int32> products_by_category = 10;
+}
+
+message TelemetryReadingModel {
+  string reading_id = 1;
+  string warehouse_id = 2;
+  string sensor_id = 3;
+  double temperature_celsius = 4;
+  double humidity_percent = 5;
+  double cpu_load_percent = 6;
+  bool is_anomaly = 7;
+  google.protobuf.Timestamp recorded_at_utc = 8;
+}
+
+message TelemetryBatchSummaryModel {
+  int32 accepted_count = 1;
+  int32 anomaly_count = 2;
+  double average_temperature_celsius = 3;
+  double max_cpu_load_percent = 4;
+  repeated string affected_warehouses = 5;
+}
+
+message BlockHeader {
+  string block_name = 1;
+  string content_type = 2;
+}
+
+message BlockUploadChunk {
+  oneof payload {
+    BlockHeader header = 1;
+    bytes chunk_data = 2;
+  }
+}
+
+message BlockUploadResult {
+  string block_id = 1;
+  string block_name = 2;
+  int64 total_bytes = 3;
+  int32 chunk_count = 4;
+  string sha256_hex = 5;
+}
+
+message BlockDownloadRequest {
+  string block_id_or_name = 1;
+  int32 chunk_size = 2;
+}
+
+message BlockDownloadChunk {
+  string block_id = 1;
+  string block_name = 2;
+  int32 sequence = 3;
+  bool is_last = 4;
+  bytes chunk_data = 5;
+  string expected_sha256_hex = 6;
+}
+
+message ChatStreamRequest {
+  string room_id = 1;
+  string sender = 2;
+  ChatCommandType command = 3;
+  string text = 4;
+  optional string order_id = 5;
+}
+
+message ChatStreamResponse {
+  string message_id = 1;
+  string room_id = 2;
+  string sender = 3;
+  string text = 4;
+  bool is_system = 5;
+  google.protobuf.Timestamp sent_at_utc = 6;
+}
+
+message PriceQuoteRequest {
+  string sku = 1;
+  int32 quantity = 2;
+  CustomerTier customer_tier = 3;
+}
+
+message PriceQuoteResponse {
+  string sku = 1;
+  string product_name = 2;
+  int32 requested_quantity = 3;
+  double unit_price = 4;
+  double discount_percent = 5;
+  double line_total = 6;
+  double running_subtotal = 7;
+  bool in_stock = 8;
+  string note = 9;
+}
+
+message SlowOperationRequest {
+  int32 delay_ms = 1;
+  string label = 2;
+}
+
+message SlowOperationResponse {
+  string label = 1;
+  int32 actual_delay_ms = 2;
+  string server_engine = 3;
+}
+
+message AuditEntryModel {
+  string engine = 1;
+  string method = 2;
+  string correlation_id = 3;
+  string user = 4;
+  int64 elapsed_ms = 5;
+  string status = 6;
+  google.protobuf.Timestamp timestamp_utc = 7;
+}
+
+message AdminAuditInfoResponse {
+  int32 total_requests = 1;
+  string authenticated_user = 2;
+  string role = 3;
+  repeated AuditEntryModel recent_entries = 4;
+}

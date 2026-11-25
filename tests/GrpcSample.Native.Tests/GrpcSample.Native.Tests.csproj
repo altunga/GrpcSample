@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" />
+    <PackageReference Include="Google.Api.CommonProtos" />
+    <PackageReference Include="Grpc.Net.Client" />
+    <PackageReference Include="Grpc.HealthCheck" />
+    <PackageReference Include="Grpc.Reflection" />
+    <PackageReference Include="Grpc.Tools" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\GrpcSample.Domain\GrpcSample.Domain.csproj" />
+    <ProjectReference Include="..\..\src\GrpcSample.Infrastructure.GrpcClient\GrpcSample.Infrastructure.GrpcClient.csproj" />
+    <ProjectReference Include="..\..\src\01-NativeGrpc\GrpcSample.Native.Contracts\GrpcSample.Native.Contracts.csproj" />
+    <ProjectReference Include="..\..\src\01-NativeGrpc\GrpcSample.Native.Server\GrpcSample.Native.Server.csproj" />
+  </ItemGroup>
+</Project>

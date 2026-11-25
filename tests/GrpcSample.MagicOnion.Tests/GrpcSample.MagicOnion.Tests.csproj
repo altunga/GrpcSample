@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Grpc.Net.Client" />
+    <PackageReference Include="Grpc.HealthCheck" />
+    <PackageReference Include="MagicOnion.Client" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\GrpcSample.Domain\GrpcSample.Domain.csproj" />
+    <ProjectReference Include="..\..\src\03-MagicOnion\GrpcSample.MagicOnion.Shared\GrpcSample.MagicOnion.Shared.csproj" />
+    <ProjectReference Include="..\..\src\03-MagicOnion\GrpcSample.MagicOnion.Server\GrpcSample.MagicOnion.Server.csproj" />
+    <ProjectReference Include="..\..\src\03-MagicOnion\GrpcSample.MagicOnion.Client\GrpcSample.MagicOnion.Client.csproj" />
+  </ItemGroup>
+</Project>

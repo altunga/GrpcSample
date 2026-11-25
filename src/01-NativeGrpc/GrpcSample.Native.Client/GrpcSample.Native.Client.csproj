@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" />
+    <PackageReference Include="Google.Api.CommonProtos" />
+    <PackageReference Include="Grpc.Net.Client" />
+    <PackageReference Include="Grpc.HealthCheck" />
+    <PackageReference Include="Grpc.Reflection" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\GrpcSample.Domain\GrpcSample.Domain.csproj" />
+    <ProjectReference Include="..\..\GrpcSample.Infrastructure.GrpcClient\GrpcSample.Infrastructure.GrpcClient.csproj" />
+    <ProjectReference Include="..\GrpcSample.Native.Contracts\GrpcSample.Native.Contracts.csproj" />
+  </ItemGroup>
+</Project>

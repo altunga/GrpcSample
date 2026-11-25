@@ -1,0 +1,179 @@
+syntax = "proto3";
+
+package commerce.v1;
+
+option csharp_namespace = "GrpcSample.Native.Contracts";
+
+import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
+import "common.proto";
+
+service CommerceService {
+  // --- Unary CRUD & Operational RPCs ---
+  rpc GetProduct (GetProductRequest) returns (ProductModel) {
+    option (google.api.http) = {
+      get: "/v1/products/{id}"
+    };
+  }
+
+  rpc ListProducts (ListProductsRequest) returns (ListProductsResponse) {
+    option (google.api.http) = {
+      get: "/v1/products"
+    };
+  }
+
+  rpc CreateProduct (CreateProductRequest) returns (ProductModel) {
+    option (google.api.http) = {
+      post: "/v1/products"
+      body: "*"
+    };
+  }
+
+  rpc UpdateProduct (UpdateProductRequest) returns (ProductModel) {
+    option (google.api.http) = {
+      put: "/v1/products/{id}"
+      body: "*"
+    };
+  }
+
+  rpc DeleteProduct (DeleteProductRequest) returns (DeleteProductResponse) {
+    option (google.api.http) = {
+      delete: "/v1/products/{id}"
+    };
+  }
+
+  rpc GetOrder (GetOrderRequest) returns (OrderModel) {
+    option (google.api.http) = {
+      get: "/v1/orders/{id}"
+    };
+  }
+
+  rpc ListOrdersByCustomer (ListOrdersByCustomerRequest) returns (ListOrdersResponse) {
+    option (google.api.http) = {
+      get: "/v1/customers/{customer_id}/orders"
+    };
+  }
+
+  rpc CreateOrder (CreateOrderRequest) returns (OrderModel) {
+    option (google.api.http) = {
+      post: "/v1/orders"
+      body: "*"
+    };
+  }
+
+  rpc GetCatalogSummary (google.protobuf.Empty) returns (CatalogSummaryModel) {
+    option (google.api.http) = {
+      get: "/v1/summary"
+    };
+  }
+
+  rpc GetAdminAuditInfo (google.protobuf.Empty) returns (AdminAuditInfoResponse);
+
+  rpc SimulateSlowOperation (SlowOperationRequest) returns (SlowOperationResponse);
+
+  // --- Server Streaming RPCs ---
+  rpc StreamProducts (StreamProductsRequest) returns (stream ProductModel);
+
+  rpc SubscribeWarehouseTelemetry (TelemetrySubscriptionRequest) returns (stream TelemetryReadingModel);
+
+  rpc DownloadBlock (BlockDownloadRequest) returns (stream BlockDownloadChunk);
+
+  // --- Client Streaming RPCs ---
+  rpc UploadBlock (stream BlockUploadChunk) returns (BlockUploadResult);
+
+  rpc IngestTelemetryBatch (stream TelemetryReadingModel) returns (TelemetryBatchSummaryModel);
+
+  // --- Bidirectional Streaming RPCs ---
+  rpc LiveOrderChat (stream ChatStreamRequest) returns (stream ChatStreamResponse);
+
+  rpc ProcessPriceQuotes (stream PriceQuoteRequest) returns (stream PriceQuoteResponse);
+}
+
+message GetProductRequest {
+  string id = 1;
+}
+
+message ListProductsRequest {
+  optional ProductCategory category = 1;
+  optional string search_term = 2;
+  bool active_only = 3;
+  optional double max_price = 4;
+  int32 page = 5;
+  int32 page_size = 6;
+}
+
+message ListProductsResponse {
+  repeated ProductModel items = 1;
+  int32 total_count = 2;
+  int32 page = 3;
+  int32 page_size = 4;
+}
+
+message CreateProductRequest {
+  string sku = 1;
+  string name = 2;
+  string description = 3;
+  ProductCategory category = 4;
+  double price = 5;
+  int32 stock_quantity = 6;
+  double rating = 7;
+  repeated string tags = 8;
+  map<string, string> attributes = 9;
+}
+
+message UpdateProductRequest {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  ProductCategory category = 4;
+  double price = 5;
+  int32 stock_quantity = 6;
+  bool is_active = 7;
+  repeated string tags = 8;
+  map<string, string> attributes = 9;
+}
+
+message DeleteProductRequest {
+  string id = 1;
+}
+
+message DeleteProductResponse {
+  bool deleted = 1;
+  string id = 2;
+}
+
+message GetOrderRequest {
+  string id = 1;
+}
+
+message ListOrdersByCustomerRequest {
+  string customer_id = 1;
+}
+
+message ListOrdersResponse {
+  repeated OrderModel items = 1;
+}
+
+message CreateOrderLineRequest {
+  string product_id = 1;
+  int32 quantity = 2;
+}
+
+message CreateOrderRequest {
+  string customer_id = 1;
+  string shipping_address = 2;
+  repeated CreateOrderLineRequest items = 3;
+}
+
+message StreamProductsRequest {
+  optional ProductCategory category = 1;
+  bool active_only = 2;
+  int32 delay_ms = 3;
+}
+
+message TelemetrySubscriptionRequest {
+  string warehouse_id = 1;
+  bool anomalies_only = 2;
+  int32 max_readings = 3;
+  int32 interval_ms = 4;
+}
